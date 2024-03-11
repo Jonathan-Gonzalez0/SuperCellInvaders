@@ -49,19 +49,24 @@ void ShipBattle::update() {
 
     // State switching logic for when the player dies
     if (this->player->health <= 0) {
-        
-        this->setNextState("GameOverState");
-        SoundManager::stopSong("battle");
-        if(EnemyManager::getSpawningBossType() != ""){
-            SoundManager::stopSong(EnemyManager::getSpawningBossType());
+        lifeCounter++;
+        if(lifeCounter == 1 || lifeCounter == 2 ){
+            player->health = 100; //Sets health back to 100
         }
-            // Write the current score to a file
-            ofstream scoreFile("currentScore.txt");
-            if (scoreFile.is_open()) {
-                scoreFile << playerScore;
-                scoreFile.close();
+        if(lifeCounter == 3){
+            this->setNextState("GameOverState");
+            SoundManager::stopSong("battle");
+            if(EnemyManager::getSpawningBossType() != ""){
+                SoundManager::stopSong(EnemyManager::getSpawningBossType());
             }
-            this->setFinished(true);
+                // Write the current score to a file
+                ofstream scoreFile("currentScore.txt");
+                if (scoreFile.is_open()) {
+                    scoreFile << playerScore;
+                    scoreFile.close();
+                }
+                this->setFinished(true);
+        }
     }
 }
 
