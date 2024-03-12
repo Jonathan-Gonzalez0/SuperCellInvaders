@@ -65,5 +65,6 @@ public:
     double killSpreeMode();                                 // Logic for kill spree mode
     double scoreMultiplier();                               // Calculate score multiplier based on game state
     void removeMarkedPlayerBullets();                       // Remove bullets marked for deletion
-    int lifeCounter = 0;                                        
+    int lifeCounter = 0;
+    int drawlifeCounter=3;                                        
 };

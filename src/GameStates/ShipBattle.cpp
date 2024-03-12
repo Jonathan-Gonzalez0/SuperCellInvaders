@@ -50,6 +50,7 @@ void ShipBattle::update() {
     // State switching logic for when the player dies
     if (this->player->health <= 0) {
         lifeCounter++;
+        drawlifeCounter--;
         if(lifeCounter == 1 || lifeCounter == 2 ){
             player->health = 100; //Sets health back to 100
         }
@@ -78,6 +79,13 @@ void ShipBattle::draw() {
     // Draw the score
     ofSetColor(ofColor::white);
     font.drawString("SCORE " + to_string(playerScore), ofGetWidth() / 2 - 50, 50);
+
+    //Draw lives Indicator-Andrés Muñiz
+    ofSetColor(ofColor::white);
+    for(unsigned int i=drawlifeCounter; i>0; i--){
+        ofDrawCircle(105 + 28*i , 120, 9);
+    }
+    font.drawString("Lives: ", 10, 130);
 
     // Draw enemies and player
     EnemyManager::drawEnemies();
