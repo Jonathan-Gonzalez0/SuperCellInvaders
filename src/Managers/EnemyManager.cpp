@@ -248,7 +248,10 @@ void EnemyManager::spawnEnemy(Player* player){
         // Spawn regular enemies if no boss is being spawned
         if (currentScore > 1500) {
             enemyList.push_back(make_unique<EnemyVanguard>(spawnLocation.x, spawnLocation.y));
-        } 
+        }
+        if (currentScore >= 5000) {
+            enemyList.push_back(make_unique<NewEnemy>(spawnLocation.x, spawnLocation.y));
+        }  
         else {
             enemyList.push_back(make_unique<EnemyCruiser>(spawnLocation.x, spawnLocation.y));
         }
