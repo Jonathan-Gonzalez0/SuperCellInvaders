@@ -6,6 +6,7 @@
 #include "EnemyVanguard.h"
 #include "ORT.h"
 #include "UFO.h"
+#include "SpaceStation.h"
 #include "playerShip.h"
 
 /*
