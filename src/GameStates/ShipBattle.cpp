@@ -1,4 +1,5 @@
 #include "ShipBattle.h"
+#include "PlayerShip.h"
 
 // ====================================
 // Constructor & Destructor Section
@@ -12,6 +13,7 @@ ShipBattle::ShipBattle() {
     font.load("Fonts/Orbitron.ttf", 20, true);
     indicatorFont.load("Fonts/Orbitron.ttf", 10, true);
     backgroundImage.load("Menu_Images/BattleArea.jpg");
+     shiplivesSprite.load("ShipModels/shipModel2.png");
 
 }
 
@@ -83,7 +85,8 @@ void ShipBattle::draw() {
     //Draw lives Indicator-Andrés Muñiz
     ofSetColor(ofColor::white);
     for(unsigned int i=drawlifeCounter; i>0; i--){
-        ofDrawCircle(105 + 28*i , 120, 9);
+        //ofDrawCircle(105 + 28*i , 120, 9);
+       shiplivesSprite.draw(80 +31*i, 110, 28, 28);
     }
     font.drawString("Lives: ", 10, 130);
 

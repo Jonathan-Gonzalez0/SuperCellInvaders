@@ -32,7 +32,7 @@ private:
     ofTrueTypeFont font;          // Font for text rendering
     ofTrueTypeFont indicatorFont; // Font for text rendering in regards 
     ofImage backgroundImage;       // Background image of the game
-
+      ofImage shiplivesSprite;     //image to show how mani lives -Andrés Muñiz
 public:   
     // Public members accessible outside the class
     Player* player;                   // Pointer to the player's ship
