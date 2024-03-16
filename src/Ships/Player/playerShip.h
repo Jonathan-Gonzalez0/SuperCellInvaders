@@ -78,4 +78,6 @@ class Player{
         void removePressedKey(int key);      // Function to remove a pressed key from the keyMap 
         void movement(char keyPressed);     // Function that will handle the movement for the ship
 
+
+    bool shiftispulsed=false;
 };
