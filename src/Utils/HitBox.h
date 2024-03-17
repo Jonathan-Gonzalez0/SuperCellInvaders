@@ -49,4 +49,7 @@ class HitBox {
     //    float getWidth() { return width; }
     //    float getHeight() { return height; }
     //////////////////////////////////////////////////////////////
+        bool isHitPlayerWithEnemy(ofPoint pos){
+            return box.inside(pos.x, pos.y); //Method used for verifying if player is inside enemy hitbox
+        }
 };

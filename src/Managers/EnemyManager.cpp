@@ -67,16 +67,11 @@ void EnemyManager::manageCollisions(Player* player) {
   // Handle collisions between player bullets and enemies
     for (auto& enemy : enemyList) {
             enemy->showHitboxes = toggleHitBoxes;
-            
-//  Won't work while hitbox is semi outside.Si el hitbox de player colisiona en un punto del hitbox, el statement no sera cierto y no corre -Andrés Muñiz
-///////////////////////////////////////////////////////////////////////////
- //if (enemy->getHitBox()->isHitPlayerWithEnemy(player->hitBox)) {
- //                player->health = max(player->health - 10.0, 0.0);  // player lose healing when hitbox colide enemy hitbox - Andrés Muñiz
- //           }
- //////////////////////////////////////////////////////////////////////////
+
         for (auto& bullet : player->bullets) {
             if (!bullet.bulletIsOutOfBounds() && enemy->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them
+                player->shield = min(player->shield + 3.0, 100.0); //Adds shield after each kill
 
                 enemy->takeDamage(bullet.getDamage());            // Enemy will take damage from the bullet
                 if (enemy->isDead()) {
@@ -93,7 +88,7 @@ void EnemyManager::manageCollisions(Player* player) {
 
     // Handle collisions between enemy bullets and the player
     for (auto& enemy : enemyList) {
-
+        
         for (auto& bullet : enemy->getBullets()) {
             if (!bullet.bulletIsOutOfBounds() && player->hitBox.isHit(bullet)) {
 
@@ -106,11 +101,14 @@ void EnemyManager::manageCollisions(Player* player) {
 
     for (auto& Boss : bossList) {
         Boss->showHitboxes = toggleHitBoxes;
-
+        	if(Boss->getHitBox()->isHitPlayerWithEnemy(player->pos)){
+                player->health = min(player->health - 4.0, 100.0);      //Removes 10 points after each collision
+            }
         for (auto& bullet : player->bullets) {
             
             if (!bullet.bulletIsOutOfBounds() && Boss->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player
+                player->shield = min(player->shield + 3.0, 100.0); //Adds shield after hitting the boss
                 Boss->takeDamage(bullet.getDamage());
                 
                 if (Boss->isDead()) {                   //If the boss has died from a bullet

@@ -62,10 +62,12 @@ public:
 
     // UI and feedback methods
     void healthBar(int currHealth, int maxHealth);          // Render the health bar
+    void forceShield(int currHealth, int maxhealth);         // Render the force field bar
     void killSpreeTimer(int currTimer, int maxTimer);       // Render the kill spree timer
     double killSpreeMode();                                 // Logic for kill spree mode
     double scoreMultiplier();                               // Calculate score multiplier based on game state
     void removeMarkedPlayerBullets();                       // Remove bullets marked for deletion
-    int lifeCounter = 0;
-    int drawlifeCounter=3;                                        
+    int lifeCounter = 0;                                    // Counts the lives the ship has
+    int drawlifeCounter=3;                                  // Used for drawing the lives
+    int shieldTimer = 0;                                    // Timer used for decreasing the shield                              
 };

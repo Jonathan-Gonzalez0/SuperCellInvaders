@@ -6,8 +6,10 @@ Player::Player(int Xposition, int Yposition){
     pos.x = Xposition;
     pos.y = Yposition;
     health = 100;
+    shield = 0;
     velocity.set(0, 0);
     this->shipSprite.load("ShipModels/shipModel2.png");
+    this->shieldSprite.load("CompressedImages/ForceShield.png");
 
     this->shipOrientation = 0;
     accelerationAmount = 5.0; // Adjust the value as needed
@@ -33,7 +35,9 @@ void Player::draw() {
             ofRotateDeg(shipOrientation);
 
             this->shipSprite.draw(-20, -20, 45, 45);
-
+            if(shieldIsActive){
+                this->shieldSprite.draw(-20, -20, 45, 45);
+            }
             ofPopMatrix();
                 
         // Draw the hitbox around the player ship. Uncomment this line for testing purposes
@@ -96,8 +100,9 @@ void Player::processPressedKeys() {
     if(keyMap['s']) movement('s');
     if(keyMap['d']) movement('d');
     if(keyMap['a']) movement('a');
-    if(keyMap[OF_KEY_SHIFT]) shiftispulsed=true;
+    if(keyMap[OF_KEY_SHIFT]) shiftispulsed=true; //Makes ship move faster
     if(keyMap[' ']) shoot();
+    if(keyMap['q']) actShield('q');
 
             
     if (!isMoving) {
@@ -136,3 +141,15 @@ void Player::movement(char keyPressed) {
         shipOrientation += rotationSpeed;
         }
     }   
+
+void Player::actShield(char keyPressed) {
+
+    if (keyPressed == 'q' && shield == 100) {
+        // Apply acceleration in the direction of the ship's orientation
+            shieldIsActive = true;
+            currHealth = health; // Health at the point shield was activated
+            SoundManager::playSong("Force Shield", true); //Plays shield sound
+            
+        }
+
+    }  
