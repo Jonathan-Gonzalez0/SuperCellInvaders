@@ -67,7 +67,13 @@ void EnemyManager::manageCollisions(Player* player) {
   // Handle collisions between player bullets and enemies
     for (auto& enemy : enemyList) {
             enemy->showHitboxes = toggleHitBoxes;
-
+            
+//  Won't work while hitbox is semi outside.Si el hitbox de player colisiona en un punto del hitbox, el statement no sera cierto y no corre -Andrés Muñiz
+///////////////////////////////////////////////////////////////////////////
+ //if (enemy->getHitBox()->isHitPlayerWithEnemy(player->hitBox)) {
+ //                player->health = max(player->health - 10.0, 0.0);  // player lose healing when hitbox colide enemy hitbox - Andrés Muñiz
+ //           }
+ //////////////////////////////////////////////////////////////////////////
         for (auto& bullet : player->bullets) {
             if (!bullet.bulletIsOutOfBounds() && enemy->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them

@@ -2,13 +2,20 @@
 #include "Projectile.h"
 
 class HitBox {
-
+    
+   // private:
+    //ofPoint pos;
+    //float width;
+   // float height;
     public:
         ofRectangle box; //will serve as the skeleton for the hitbox 
 
         HitBox(){} //Useless constructor, just use the other constructors
         
         HitBox(ofPoint pos, float width, float height){
+    //        this->pos=pos;
+     //       this->width=width;
+     //       this->height=height;
             this->box = ofRectangle(pos, width, height);
         }
 
@@ -31,4 +38,15 @@ class HitBox {
         bool isHit(Projectiles& bullet){
             return box.inside(bullet.position.x, bullet.position.y);          
         }
+        //no podemos chekear si hitbox esta dentro de otro hitbox debido
+        //a que se debe tomar enuenta cualquier punto que toca hitbox con otro hitbox - Andrés E. Muñiz Ríos
+   /////////////////////////////////////////////////////////////////////////    
+    // bool isHitPlayerWithEnemy(HitBox a){
+    //           return this->box.inside(a.pos.x, a.pos.y);    
+    //    }
+        //Getters -Andrés Muñiz
+    //     ofPoint getPos() { return pos; }
+    //    float getWidth() { return width; }
+    //    float getHeight() { return height; }
+    //////////////////////////////////////////////////////////////
 };
