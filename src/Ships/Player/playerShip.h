@@ -10,6 +10,7 @@ class Player{
 
     private:
         ofImage shipSprite;                 // Sprite for the ship   
+        ofImage shieldSprite;                // Shield for the ship
 
         int score;                          // Score of the player
 
@@ -33,12 +34,15 @@ class Player{
 
        // === Public attributes ===
         int health;                         // Needed in public for ease of use and direct access
+        int shield;                         // Shield of ship
         int shipOrientation;                // Orientation of the ship
         unordered_map<int, bool> keyMap;    // A Map is used to handle the keys pressed
         vector<Projectiles> bullets;        // List of bullets
         ofPoint pos;                        // Position of the player
         HitBox hitBox;                      // Hitbox for the player
         bool showHitbox = false;
+        bool shieldIsActive = false;        //Sets shield to be deactivated as default
+        int currHealth;                     // Health that the player has at the instant
 
     // === Constructors ===
         Player();                                      // Default Constructor
@@ -79,5 +83,8 @@ class Player{
         void movement(char keyPressed);     // Function that will handle the movement for the ship
 
 
-    bool shiftispulsed=false;
+        bool shiftispulsed=false;
+
+    //Method for verifying if shield is activated
+        void actShield(char keyPressed);
 };

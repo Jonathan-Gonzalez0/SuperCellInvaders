@@ -49,11 +49,25 @@ void ShipBattle::update() {
         updateBullets();
     }
 
+    //Logic for activating shield
+    if (player->shieldIsActive){
+        shieldTimer++;
+        player->health = player->currHealth;
+
+        if(shieldTimer % 40 ==0 ){
+            player->shield -= 5; //Removes 5 points from the shield after calling update 40 times
+        }  
+        if(player->shield <= 0){ 
+            player->shieldIsActive = false; //Deactivates shield when it reaches cero
+            SoundManager::stopSong("Force Shield");
+        }
+    }
+
     // State switching logic for when the player dies
     if (this->player->health <= 0) {
         lifeCounter++;
         drawlifeCounter--;
-        if(lifeCounter == 1 || lifeCounter == 2 ){
+        if(lifeCounter < 3 ){
             player->health = 100; //Sets health back to 100
         }
         if(lifeCounter == 3){
@@ -86,9 +100,9 @@ void ShipBattle::draw() {
     ofSetColor(ofColor::white);
     for(unsigned int i=drawlifeCounter; i>0; i--){
         //ofDrawCircle(105 + 28*i , 120, 9);
-       shiplivesSprite.draw(80 +31*i, 110, 28, 28);
+       shiplivesSprite.draw(80 +31*i, ofGetWindowHeight()-75, 28, 28);
     }
-    font.drawString("Lives: ", 10, 130);
+    font.drawString("Lives: ", 10, ofGetWindowHeight()-50);
 
     // Draw enemies and player
     EnemyManager::drawEnemies();
@@ -108,6 +122,7 @@ void ShipBattle::draw() {
 
     // Draw UI elements
     healthBar(player->health, 100);
+    forceShield(player->shield, 100);
     killSpreeTimer(this->killspreeTimer, 150);
     
     //Draw a mini box for the bomb. Make sure to draw the bomb inside this box.
@@ -131,6 +146,8 @@ void ShipBattle::keyPressed(int key) {
     }
     if(key == 'o')  player->health = 100;
     if(key == 'p')  playerScore += 10000; 
+    if(key == 'z') player->shield = 100;
+    if(key == 'x') player->shield = 0;
 }
 
 void ShipBattle::keyReleased(int key) {
@@ -178,6 +195,16 @@ void ShipBattle::healthBar(int currHealth, int maxHealth) {
     ofFill();
     ofSetColor(ofColor::green);
     ofDrawRectangle(10, 40, currHealth *2, 20);
+    ofSetColor(ofColor::white);
+}
+
+void ShipBattle::forceShield(int currShield, int maxShield) {
+    indicatorFont.drawString("Force Shield", 10, 120);
+    ofNoFill();
+    ofDrawRectangle(10, 130, maxShield *2, 20);
+    ofFill();
+    ofSetColor(ofColor::blue);
+    ofDrawRectangle(10, 130, currShield *2, 20);
     ofSetColor(ofColor::white);
 }
 

@@ -22,6 +22,8 @@ void ofApp::setup(){
     SoundManager::loadSong("bulletSound", "Sounds/shootingSound.mp3");
     SoundManager::loadSong("Beam", "Sounds/Laser_Beam.mp3");
     SoundManager::loadSong("SPACE STATION", "Sounds/SpaceStationBoss.mp3");
+    SoundManager::loadSong("Force Shield", "Sounds/ShieldSound.mp3");
+
 
 //States
     intro = new IntroState();
