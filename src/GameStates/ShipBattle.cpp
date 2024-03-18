@@ -39,6 +39,12 @@ void ShipBattle::update() {
     this->player->update();
     wrapCoords(this->player->pos);
 
+    //Logic for activating bomb
+    if(player->bombIsActivated){
+        EnemyManager::explosion(player);
+        player->bombIsActivated = false;
+    }
+    
     // Update scoring and kill spree timer
     playerScore += EnemyManager::getPointsScored() * scoreMultiplier() * killSpreeMode();
     this->player->setScore(playerScore);
@@ -62,7 +68,7 @@ void ShipBattle::update() {
             SoundManager::stopSong("Force Shield");
         }
     }
-
+    
     // State switching logic for when the player dies
     if (this->player->health <= 0) {
         lifeCounter++;

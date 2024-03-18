@@ -10,6 +10,7 @@ Player::Player(int Xposition, int Yposition){
     velocity.set(0, 0);
     this->shipSprite.load("ShipModels/shipModel2.png");
     this->shieldSprite.load("CompressedImages/ForceShield.png");
+    this->bomb.load("CompressedImages/Bomb-min.png");
 
     this->shipOrientation = 0;
     accelerationAmount = 5.0; // Adjust the value as needed
@@ -29,6 +30,10 @@ int Player::getScore() { return score; }
 void Player::setScore(int score) { this->score = score; }
 
 void Player::draw() {
+        if(bombs >= 1){
+            this->bomb.draw(ofGetWidth() - 150, 30, 50, 50); //Makes sure to draw the bomb when it is necessary
+        }
+
         // Draw the ship sprite with the calculated rotation
             ofPushMatrix();
             ofTranslate(this->pos.x, this->pos.y);
@@ -109,7 +114,8 @@ void Player::processPressedKeys() {
     if(keyMap['a']) movement('a');
     if(keyMap[OF_KEY_SHIFT]) shiftispulsed=true; //Makes ship move faster
     if(keyMap[' ']) shoot();
-    if(keyMap['q']) actShield('q');
+    if(keyMap['q']) actShield('q'); //Activates shield
+    if(keyMap['e']) actBomb('e'); //Activates bomb
 
             
     if (!isMoving) {
@@ -152,10 +158,21 @@ void Player::movement(char keyPressed) {
 void Player::actShield(char keyPressed) {
 
     if (keyPressed == 'q' && shield == 100) {
-        // Apply acceleration in the direction of the ship's orientation
+        
             shieldIsActive = true;
             currHealth = health; // Health at the point shield was activated
             SoundManager::playSong("Force Shield", true); //Plays shield sound
+            
+        }
+
+    }  
+
+void Player::actBomb(char keyPressed) {
+
+    if (keyPressed == 'e' && bombs >= 1) {
+        
+            bombIsActivated = true;
+            bombs--;
             
         }
 
