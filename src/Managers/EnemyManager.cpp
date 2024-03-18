@@ -66,10 +66,8 @@ void EnemyManager::manageCollisions(Player* player) {
 
   // Handle collisions between player bullets and enemies
     for (auto& enemy : enemyList) {
-        enemy->showHitboxes = toggleHitBoxes;
-            if(enemy->getHitBox()->isHitPlayerWithEnemy(player->pos)){
-                player->health = min(player->health - 3.0, 100.0);      //Removes 3 points after each collision
-            }
+            enemy->showHitboxes = toggleHitBoxes;
+
         for (auto& bullet : player->bullets) {
             if (!bullet.bulletIsOutOfBounds() && enemy->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them
