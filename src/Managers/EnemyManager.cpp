@@ -73,7 +73,7 @@ void EnemyManager::manageCollisions(Player* player) {
         for (auto& bullet : player->bullets) {
             if (!bullet.bulletIsOutOfBounds() && enemy->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them
-                player->shield = min(player->shield + 3.0, 100.0); //Adds shield after each kill
+                player->shield = min(player->shield + 2.0, 100.0); //Adds shield after each kill
 
                 enemy->takeDamage(bullet.getDamage());            // Enemy will take damage from the bullet
                 if (enemy->isDead()) {
@@ -110,10 +110,11 @@ void EnemyManager::manageCollisions(Player* player) {
             
             if (!bullet.bulletIsOutOfBounds() && Boss->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player
-                player->shield = min(player->shield + 3.0, 100.0); //Adds shield after hitting the boss
+                player->shield = min(player->shield + 1.0, 100.0); //Adds shield after hitting the boss
                 Boss->takeDamage(bullet.getDamage());
                 
                 if (Boss->isDead()) {                   //If the boss has died from a bullet
+                    player->bombs++;
                     SoundManager::stopSong(whichBoss);
                     SoundManager::playSong("battle", false);
                     bossHasDied();
@@ -357,3 +358,17 @@ void EnemyManager::removeEnemies() {
         bossList.end());
 }
 
+void EnemyManager::explosion(Player* player){
+    for (auto& enemy : enemyList) {
+        player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them
+        player->shield = min(player->shield + 2.0, 100.0); //Adds shield after each kill          
+        pointsPerUpdateCycle += enemy->getPoints();
+        enemy->takeDamage(20);  // Kills each ship
+        SoundManager::playSong("shipDestroyed", false); 
+        resetKillSpreeTimer(150);
+    }
+    
+    for (auto& Boss : bossList) {
+        Boss->takeDamage(50);
+    }
+}

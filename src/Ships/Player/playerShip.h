@@ -11,6 +11,7 @@ class Player{
     private:
         ofImage shipSprite;                 // Sprite for the ship   
         ofImage shieldSprite;                // Shield for the ship
+        ofImage bomb;                       // Bomb that will be displayed
 
         int score;                          // Score of the player
 
@@ -43,6 +44,8 @@ class Player{
         bool showHitbox = false;
         bool shieldIsActive = false;        //Sets shield to be deactivated as default
         int currHealth;                     // Health that the player has at the instant
+        int bombs = 0;                      // Bomb counter
+        bool bombIsActivated = false;       // Verifies if bomb was activated
 
     // === Constructors ===
         Player();                                      // Default Constructor
@@ -87,4 +90,7 @@ class Player{
 
     //Method for verifying if shield is activated
         void actShield(char keyPressed);
+
+    //Method for activating bomb
+        void actBomb(char keyPressed);
 };
