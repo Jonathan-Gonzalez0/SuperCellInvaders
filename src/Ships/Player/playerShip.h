@@ -10,6 +10,7 @@ class Player{
 
     private:
         ofImage shipSprite;                 // Sprite for the ship   
+        ofImage ship2Sprite;               //Sprite for the second ship - Andrés Muñiz
         ofImage shieldSprite;                // Shield for the ship
         ofImage bomb;                       // Bomb that will be displayed
 

@@ -8,6 +8,7 @@ Player::Player(int Xposition, int Yposition){
     health = 100;
     shield = 0;
     velocity.set(0, 0);
+    this->ship2Sprite.load("CompressedImages/secondShip.png");
     this->shipSprite.load("ShipModels/shipModel2.png");
     this->shieldSprite.load("CompressedImages/ForceShield.png");
     this->bomb.load("CompressedImages/Bomb-min.png");
@@ -39,7 +40,12 @@ void Player::draw() {
             ofTranslate(this->pos.x, this->pos.y);
             ofRotateDeg(shipOrientation);
 
+            if(newbossdied){
+            this->ship2Sprite.draw(-20, -20, 45, 45);
+            }
+            else{
             this->shipSprite.draw(-20, -20, 45, 45);
+            }
             if(shieldIsActive){
                 this->shieldSprite.draw(-20, -20, 45, 45);
             }
@@ -74,7 +80,7 @@ void Player::shoot() {
         if (currentTime - lastShotTime >= shotCooldown) {
 
                  if(newbossdied){
-                Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation,30);
+                Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation,20);
                 p.setColors(ofColor::pink, ofColor::red); 
                  this->bullets.push_back(p);  
                 }
