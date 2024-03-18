@@ -68,9 +68,16 @@ void Player::shoot() {
     // Check if enough time has passed since the last shot
         if (currentTime - lastShotTime >= shotCooldown) {
 
+                 if(newbossdied){
+                Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation,30);
+                p.setColors(ofColor::pink, ofColor::red); 
+                 this->bullets.push_back(p);  
+                }
+                else{
                 Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation);
                 p.setColors(ofColor::azure, ofColor::blueViolet);
                 this->bullets.push_back(p);
+                }
 
             // SoundManager::playSong("bulletSound", false);
             SoundManager::playSong("Beam", false);

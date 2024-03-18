@@ -44,6 +44,7 @@ class Player{
         bool shieldIsActive = false;        //Sets shield to be deactivated as default
         int currHealth;                     // Health that the player has at the instant
 
+        bool newbossdied=false;             //Determine if the boss created in spec 2 have died-Andrés Muñiz
     // === Constructors ===
         Player();                                      // Default Constructor
         Player(int Xposition, int Yposition);         // Parametrized Constructor for the playerShip
