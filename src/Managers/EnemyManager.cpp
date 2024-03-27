@@ -112,7 +112,7 @@ void EnemyManager::manageCollisions(Player* player) {
                 Boss->takeDamage(bullet.getDamage());
                 
                 if (Boss->isDead()) {                   //If the boss has died from a bullet
-                    player->bombs++;
+                    player->bombs = 1;
                     SoundManager::stopSong(whichBoss);
                     SoundManager::playSong("battle", false);
                     bossHasDied();
