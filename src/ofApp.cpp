@@ -23,11 +23,15 @@ void ofApp::setup(){
     SoundManager::loadSong("Beam", "Sounds/Laser_Beam.mp3");
     SoundManager::loadSong("SPACE STATION", "Sounds/SpaceStationBoss.mp3");
     SoundManager::loadSong("Force Shield", "Sounds/ShieldSound.mp3");
-
+    SoundManager::loadSong("avatar", "Sounds/avatarMusic.mp3");
+    SoundManager::loadSong("Fire Ball", "Sounds/fireBallSound.mp3");
+    SoundManager::loadSong("Wind", "Sounds/windSound.mp3");
+    SoundManager::loadSong("Zeppellin", "Sounds/Zeppellin.mp3");
 
 //States
     intro = new IntroState();
     battle = new ShipBattle();
+    avatar = new AvatarBattle();
     gameOver = new GameOverState();
     
     battle->displayBossWarning = false; // Setting the boss warning to false at the start to avoid a visual bug.
@@ -56,7 +60,13 @@ void ofApp::update(){
             currentState = battle;
         }
 
+        else if(currentState->getNextState() == "Avatar"){
+            SoundManager::playSong("avatar", true);
+            currentState = avatar;
+        }
+
         else if(currentState->getNextState() == "GameOverState") {
+            avatar = new AvatarBattle;
             battle = new ShipBattle(); //Resets ship
             EnemyManager::cleanUp(); //Cleans up enemies
             battle->displayBossWarning = false;

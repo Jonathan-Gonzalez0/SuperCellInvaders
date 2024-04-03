@@ -4,6 +4,7 @@
 #include "State.h"
 #include "SoundManager.h"
 #include "ShipBattle.h"
+#include "AvatarBattle.h"
 #include "introState.h"
 #include "GameOverState.h"
 #include <string>
@@ -34,6 +35,7 @@ class ofApp : public ofBaseApp{
 		State *currentState;
 		IntroState *intro;
 		ShipBattle *battle;
+		AvatarBattle *avatar;
 		GameOverState *gameOver;
 
 
