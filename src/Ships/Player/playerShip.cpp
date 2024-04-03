@@ -7,6 +7,7 @@ Player::Player(int Xposition, int Yposition){
     health = 100;
     shield = 0;
     velocity.set(0, 0);
+    this->ship2Sprite.load("CompressedImages/secondShip.png");
     this->shipSprite.load("ShipModels/shipModel2.png");
     this->shieldSprite.load("CompressedImages/ForceShield.png");
     this->bomb.load("CompressedImages/Bomb-min.png");
@@ -65,7 +66,12 @@ void Player::draw() {
             if(skin == "Aang"){
                 this->shipSprite.draw(-120, -90, 170, 170);
             }else{
+                if(newbossdied){
+                this->ship2Sprite.draw(-20, -20, 45, 45);
+                }
+                else{
                 this->shipSprite.draw(-20, -20, 45, 45);
+                }
             }
             if(shieldIsActive){
                 this->shieldSprite.draw(-20, -20, 45, 45);
@@ -105,7 +111,8 @@ void Player::shoot() {
 
     // Check if enough time has passed since the last shot
         if (currentTime - lastShotTime >= shotCooldown) {
-            if(skin == "Aang"){
+
+                if(skin == "Aang"){
                     double a = 30/pow(50,2);
                 for(int i = -50; i <= 50; i += 10){
                     double left = i*cos(ofDegToRad(shipOrientation+90))+(30-a*pow(i,2))*sin(ofDegToRad(shipOrientation+90));
@@ -119,9 +126,16 @@ void Player::shoot() {
                     group = 0;
                 }
             }else{
+                if(newbossdied){
+                Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation,20);
+                p.setColors(ofColor::pink, ofColor::red); 
+                 this->bullets.push_back(p);  
+                }
+                else{
                 Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation);
                 p.setColors(ofColor::azure, ofColor::blueViolet);
                 this->bullets.push_back(p);
+                }
             }
 
             // SoundManager::playSong("bulletSound", false);

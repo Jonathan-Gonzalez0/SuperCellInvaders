@@ -55,4 +55,5 @@ class Boss : public EnemyShip {
         ofSetColor(ofColor::white); // Reset color to white for subsequent drawing operations
     }
 
+ string getBossName(){return bossName;} //getter para spec 3 stronger projectile -Andres Muñiz
 };

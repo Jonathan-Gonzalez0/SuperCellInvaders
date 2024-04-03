@@ -10,6 +10,7 @@ class Player{
 
     private:
         ofImage shipSprite;                 // Sprite for the ship   
+        ofImage ship2Sprite;               //Sprite for the second ship - Andrés Muñiz
         ofImage shieldSprite;                // Shield for the ship
         ofImage bomb;                       // Bomb that will be displayed
 
@@ -51,6 +52,7 @@ class Player{
         ofImage windBullet;                 // Bullet of Character
         ofImage fireBullet;
 
+        bool newbossdied=false;             //Determine if the boss created in spec 2 have died-Andrés Muñiz
     // === Constructors ===
         Player();                                      // Default Constructor
         Player(int Xposition, int Yposition);         // Parametrized Constructor for the playerShip

@@ -158,6 +158,9 @@ void EnemyManager::manageCollisions(Player* player) {
                     }else{
                         SoundManager::playSong("battle", false);
                     }
+                    if(Boss->getBossName()=="SPACE STATION"){
+                    player->newbossdied=true;
+                    }
                     bossHasDied();
                     SoundManager::playSong("shipDestroyed", false);
                     pointsPerUpdateCycle += Boss->getPoints();
