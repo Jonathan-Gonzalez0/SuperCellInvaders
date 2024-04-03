@@ -46,10 +46,15 @@ class Player{
         int currHealth;                     // Health that the player has at the instant
         int bombs = 0;                      // Bomb counter
         bool bombIsActivated = false;       // Verifies if bomb was activated
+        string skin;
+        int group = 0;                          // Group of projectiles
+        ofImage windBullet;                 // Bullet of Character
+        ofImage fireBullet;
 
     // === Constructors ===
         Player();                                      // Default Constructor
         Player(int Xposition, int Yposition);         // Parametrized Constructor for the playerShip
+        Player(int Xposition, int Yposition, string Character);         // Parametrized Constructor for the playerShip
     
         int getScore(); 
         void setScore(int score); 

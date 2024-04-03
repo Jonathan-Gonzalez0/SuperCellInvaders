@@ -19,7 +19,7 @@ class Boss : public EnemyShip {
 
 
     public:
-        Boss(int xpos, int ypos, double speed, int health, string name) : EnemyShip(xpos, ypos, speed, health, 10000) {
+        Boss(int xpos, int ypos, double speed, int health, string name) : EnemyShip(xpos, ypos, speed, health, 2500) {
             bossName = name;
             BossHealth = health;
             amIBoss = true;

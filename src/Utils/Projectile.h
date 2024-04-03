@@ -18,6 +18,11 @@ class Projectiles {
         float angle;                // The angle of the projectile's trajectory
         int damage;                 // The damage the projectile can inflict
         ofImage img;                // The image of the new projectile
+        string character;           // Character to load image of
+        int index;                   // Index where bullets will be drawn
+        int batch;                   // Counts the batches of bullets made
+        bool enemy;                  // To make sure which bullets will be shot
+        ofImage* bullet;             // Image of bullet
         
     public:
         ofPoint position;           // The current position of the projectile
@@ -27,9 +32,11 @@ class Projectiles {
         // Constructors
         Projectiles(ofPoint p, float angle);            // Constructor to initialize a projectile with position and angle
         Projectiles(ofPoint p, float angle, int dmg);   // Overloaded constructor to also set damage
+        Projectiles(ofPoint p, float angle, string character, int index, int batch, ofImage* bullet);   // Overloaded constructor to also set damage
 
         // Getter and Setter Methods
         int getDamage() { return damage; }              // Returns the damage of the projectile
+        int getBatch();                                 // Returns bacth
         void setSpeed(int s) { speed = s; }             // Sets the speed of the projectile
         void setColors(ofColor c1, ofColor c2);         // Sets the colors of the projectile
 
@@ -38,4 +45,6 @@ class Projectiles {
         void draw();                                    // Draws the projectile on the screen
         void markForDeletion();                         // Marks the projectile for deletion
         bool bulletIsOutOfBounds();                     // Checks if the projectile is out of the screen bounds
+        static void sprite();                                  // Loads sprites
+
 };

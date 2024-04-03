@@ -6,11 +6,13 @@
 #include "EnemyCruiser.h"
 #include "EnemyVanguard.h"
 #include "NewEnemy.h"
+#include "airShip.h"
 
 // Section for Bosses
 #include "ORT.h"
 #include "UFO.h"
 #include "SpaceStation.h"
+#include "Zeppellin.h"
 
 class EnemyManager {
     //==================== Utility Functions and Variables ====================
@@ -49,6 +51,7 @@ class EnemyManager {
         static bool ufoSeen;
         static bool ortSeen;
         static bool spaceSeen;
+        static bool zeppellinSeen;
 
 
     public:

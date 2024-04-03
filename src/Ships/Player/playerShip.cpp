@@ -1,6 +1,5 @@
 #include "playerShip.h"
 
-
 //Parametrized Constructor for the playerShip
 Player::Player(int Xposition, int Yposition){
     pos.x = Xposition;
@@ -22,6 +21,31 @@ Player::Player(int Xposition, int Yposition){
 
 }
 
+Player::Player(int Xposition, int Yposition, string Character){
+    pos.x = Xposition;
+    pos.y = Yposition;
+    health = 100;
+    shield = 0;
+    velocity.set(0, 0);
+    skin = Character;
+    this->shipSprite.load("ShipModels/aangAndAppa.png");
+    this->shieldSprite.load("CompressedImages/ForceShield.png");
+    this->bomb.load("CompressedImages/Bomb-min.png");
+    windBullet.load("Bullets/airBullet.png");
+    fireBullet.load("Bullets/fireBall.png");
+
+    this->shipOrientation = 0;
+    accelerationAmount = 5.0; // Adjust the value as needed
+    score = 0;
+    hitBox =  HitBox(pos, shipSprite.getWidth() * 0.090625, shipSprite.getHeight() * 0.06660156);
+            
+    lastShotTime = 0;
+    shotCooldown = 0.5;  // Set the cooldown duration to 2.5 seconds (adjust as needed)
+    this->skin = Character;
+
+}
+
+
 Player::Player(){
     Player(ofGetWidth()/2, ofGetHeight()/2);
 }
@@ -30,7 +54,7 @@ int Player::getScore() { return score; }
 void Player::setScore(int score) { this->score = score; }
 
 void Player::draw() {
-        if(bombs >= 1){
+        if(bombs == 1){
             this->bomb.draw(ofGetWidth() - 150, 30, 50, 50); //Makes sure to draw the bomb when it is necessary
         }
 
@@ -38,15 +62,20 @@ void Player::draw() {
             ofPushMatrix();
             ofTranslate(this->pos.x, this->pos.y);
             ofRotateDeg(shipOrientation);
-
-            this->shipSprite.draw(-20, -20, 45, 45);
+            if(skin == "Aang"){
+                this->shipSprite.draw(-120, -90, 170, 170);
+            }else{
+                this->shipSprite.draw(-20, -20, 45, 45);
+            }
             if(shieldIsActive){
                 this->shieldSprite.draw(-20, -20, 45, 45);
             }
             ofPopMatrix();
                 
         // Draw the hitbox around the player ship. Uncomment this line for testing purposes
+        
             if(showHitbox)  this->hitBox.draw();
+            
 }
 
 void Player::update() {
@@ -58,7 +87,11 @@ else{
     velocity.limit(maxSpeed); // Limit the velocity to the maximum speed
 }           
     pos += velocity; // Update position based on velocity
-    this->hitBox.box.setPosition(pos.x - 15, pos.y - 15);
+    if(skin == "Aang"){
+        this->hitBox.box.setPosition(pos.x - 113, pos.y - 80);
+    }else{
+        this->hitBox.box.setPosition(pos.x - 15, pos.y - 15);
+    }
             
     velocity *= damping; // Apply damping to slow down the ship
 
@@ -72,13 +105,32 @@ void Player::shoot() {
 
     // Check if enough time has passed since the last shot
         if (currentTime - lastShotTime >= shotCooldown) {
-
+            if(skin == "Aang"){
+                    double a = 30/pow(50,2);
+                for(int i = -50; i <= 50; i += 10){
+                    double left = i*cos(ofDegToRad(shipOrientation+90))+(30-a*pow(i,2))*sin(ofDegToRad(shipOrientation+90));
+                    double right = i*sin(ofDegToRad(shipOrientation+90))+(-30+a*pow(i,2))*cos(ofDegToRad(shipOrientation+90));
+                    Projectiles p = Projectiles(ofPoint(this->pos.x + 75*sin(ofDegToRad(shipOrientation))+left, this->pos.y - 75*cos(ofDegToRad(shipOrientation))+right), this->shipOrientation, "Aang", i, group, &windBullet);
+                    p.setColors(ofColor::azure, ofColor::blueViolet);
+                    this->bullets.push_back(p);
+                }
+                group++;
+                if(group == 3){
+                    group = 0;
+                }
+            }else{
                 Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation);
                 p.setColors(ofColor::azure, ofColor::blueViolet);
                 this->bullets.push_back(p);
+            }
 
             // SoundManager::playSong("bulletSound", false);
-            SoundManager::playSong("Beam", false);
+            if(skin == "Aang"){
+                SoundManager::playSong("Wind", false);
+            }
+            else{
+                SoundManager::playSong("Beam", false);
+            }
 
             // Update the last shot time to the current time
             lastShotTime = currentTime;

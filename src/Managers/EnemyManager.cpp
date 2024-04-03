@@ -10,6 +10,7 @@
     bool EnemyManager::ufoSeen = false;
     bool EnemyManager::ortSeen = false;
     bool EnemyManager::spaceSeen = false;
+    bool EnemyManager::zeppellinSeen = false;
 
     string EnemyManager::whichBoss = "";
     int EnemyManager::bossWarningTimer = 0;
@@ -65,9 +66,43 @@ void EnemyManager::updateEnemies(Player* player){
 void EnemyManager::manageCollisions(Player* player) {
 
   // Handle collisions between player bullets and enemies
+  if(player->skin =="Aang"){
+        for (auto& enemy : enemyList) {
+            enemy->showHitboxes = toggleHitBoxes;
+        
+        for (auto& bullet : player->bullets) {
+            if (!bullet.bulletIsOutOfBounds() && enemy->getHitBox()->isHit(bullet)) {
+                player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them
+                player->shield = min(player->shield + 2.0, 100.0); //Adds shield after each kill
+                int erase = bullet.getBatch();
+                enemy->takeDamage(bullet.getDamage());            // Enemy will take damage from the bullet
+                if (enemy->isDead()) {
+                    SoundManager::playSong("shipDestroyed", false);
+                    pointsPerUpdateCycle += enemy->getPoints();
+                    resetKillSpreeTimer(150);
+                }
+                for (auto& bullet : player->bullets) {
+                    if(erase == 0 && bullet.getBatch() == 0){
+                        bullet.markForDeletion(); // Mark bullet for deletion
+                    }
+                    if(erase == 1 && bullet.getBatch() == 1){
+                        bullet.markForDeletion(); // Mark bullet for deletion
+                    }
+                    if(erase == 2 && bullet.getBatch() == 2){
+                        bullet.markForDeletion(); // Mark bullet for deletion
+                    }     
+                    
+                }
+            }
+            if(bullet.bulletIsOutOfBounds()){
+                bullet.markForDeletion();
+             }
+        }
+    }
+  }else{
     for (auto& enemy : enemyList) {
             enemy->showHitboxes = toggleHitBoxes;
-
+        
         for (auto& bullet : player->bullets) {
             if (!bullet.bulletIsOutOfBounds() && enemy->getHitBox()->isHit(bullet)) {
                 player->health = min(player->health + 3.0, 100.0); // Reward the player by healing them
@@ -81,8 +116,12 @@ void EnemyManager::manageCollisions(Player* player) {
                 }
                 bullet.markForDeletion(); // Mark bullet for deletion
             }
+            if(bullet.bulletIsOutOfBounds()){
+                bullet.markForDeletion();
+             }
         }
     }
+}
 
     enemyList.erase(remove_if(enemyList.begin(), enemyList.end(), [](const unique_ptr<EnemyShip>& enemy){ return !enemy; }), enemyList.end());
 
@@ -114,7 +153,11 @@ void EnemyManager::manageCollisions(Player* player) {
                 if (Boss->isDead()) {                   //If the boss has died from a bullet
                     player->bombs = 1;
                     SoundManager::stopSong(whichBoss);
-                    SoundManager::playSong("battle", false);
+                    if(player->skin == "Aang"){
+                        SoundManager::playSong("avatar", true);
+                    }else{
+                        SoundManager::playSong("battle", false);
+                    }
                     bossHasDied();
                     SoundManager::playSong("shipDestroyed", false);
                     pointsPerUpdateCycle += Boss->getPoints();
@@ -133,6 +176,9 @@ void EnemyManager::manageCollisions(Player* player) {
                 player->health = max(player->health - 10.0, 0.0);       // Player takes damage 
                 bullet.markForDeletion(); // Mark bullet for deletion
             }
+            if(bullet.bulletIsOutOfBounds()){
+                bullet.markForDeletion();
+             }
         }
     }
 
@@ -141,6 +187,9 @@ void EnemyManager::manageCollisions(Player* player) {
     
     for (auto& enemy : enemyList) {
         enemy->removeMarkedBullets();
+    }
+    for (auto& Boss : bossList) {
+        Boss->removeMarkedBullets();
     }
 
 }
@@ -236,37 +285,54 @@ void EnemyManager::spawnEnemy(Player* player){
     
     if (enemySpawnTimer >= spawnInterval) {
         ofPoint spawnLocation = getRandomEdgePoint();
-
-        // Check if it's time to spawn a boss
-        if (!bossIsActive) { // Ensure no boss is currently active before spawning another
-            if (currentScore > 75000 && !ortSeen) {
-                // Spawn ORT Xibalba
-                initiateBossSpawn("ORT Xibalba");
-                ortSeen = true; // Prevent multiple spawns
+        if(player->skin== "Aang"){
+            // Check if it's time to spawn a boss
+            if (!bossIsActive) { // Ensure no boss is currently active before spawning another
+                if (currentScore >= 10000 && !zeppellinSeen) {
+                    // Spawn ORT Xibalba
+                    initiateBossSpawn("Zeppellin");
+                    zeppellinSeen = true; // Prevent multiple spawns
+                }
             }
-            else if (currentScore > 50000 && !ufoSeen) {
-                // Spawn UFO ORT
-                initiateBossSpawn("Galactica Supercell ORT");
-                ufoSeen = true; // Prevent multiple spawns
-            }
-            else if(currentScore > 10000 && !spaceSeen){
-                initiateBossSpawn("SPACE STATION");
-                spaceSeen = true;
+        }else{
+            // Check if it's time to spawn a boss
+            if (!bossIsActive) { // Ensure no boss is currently active before spawning another
+                if (currentScore > 75000 && !ortSeen) {
+                    // Spawn ORT Xibalba
+                    initiateBossSpawn("ORT Xibalba");
+                    ortSeen = true; // Prevent multiple spawns
+                }
+                else if (currentScore > 50000 && !ufoSeen) {
+                    // Spawn UFO ORT
+                    initiateBossSpawn("Galactica Supercell ORT");
+                    ufoSeen = true; // Prevent multiple spawns
+                }
+                else if(currentScore > 10000 && !spaceSeen){
+                    initiateBossSpawn("SPACE STATION");
+                    spaceSeen = true;
+                }
             }
         }
+        
 
         // Spawn regular enemies if no boss is being spawned
-        if (currentScore > 1500) {
-            enemyList.push_back(make_unique<EnemyVanguard>(spawnLocation.x, spawnLocation.y));
-        }
-        if (currentScore >= 5000) {
-            enemyList.push_back(make_unique<NewEnemy>(spawnLocation.x, spawnLocation.y));
-        }  
-        else {
-            enemyList.push_back(make_unique<EnemyCruiser>(spawnLocation.x, spawnLocation.y));
-        }
+        if(player->skin == "Aang"){
+            enemyList.push_back(make_unique<airShip>(spawnLocation.x, spawnLocation.y, &player->fireBullet));
+            
+            enemySpawnTimer = 0; // Reset timer after spawning
+        }else{
+            if (currentScore > 1500) {
+                enemyList.push_back(make_unique<EnemyVanguard>(spawnLocation.x, spawnLocation.y));
+            }
+            if (currentScore >= 5000) {
+                enemyList.push_back(make_unique<NewEnemy>(spawnLocation.x, spawnLocation.y));
+            }  
+            else {
+                enemyList.push_back(make_unique<EnemyCruiser>(spawnLocation.x, spawnLocation.y));
+            }
 
-        enemySpawnTimer = 0; // Reset timer after spawning
+            enemySpawnTimer = 0; // Reset timer after spawning
+        }
     }
     
     }
@@ -311,6 +377,11 @@ void EnemyManager::spawnBoss(const string& bossType) {
         auto boss = make_unique<SpaceStation>(ofGetWidth()/2, 20, "SPACE STATION");
         bossList.push_back(move(boss));
     }
+    else if(bossType == "Zeppellin"){
+        spaceSeen = true;
+        auto boss = make_unique<Zeppellin>(ofGetWidth()/2, 20, "Zeppellin");
+        bossList.push_back(move(boss));
+    }
     // Reset the spawn timer and clear boss spawning flags
     enemySpawnTimer = 0;
     bossIsSpawning = false;
@@ -325,9 +396,10 @@ void EnemyManager::bossHasDied() {
 
 int EnemyManager::whichSpawnInterval(int playerScore) {
     // Simplified example, adjust intervals as needed
-    if (!bossIsActive && spaceSeen) return 5;
-    if (!bossIsActive && ortSeen) return 10;
-    if (!bossIsActive && ufoSeen) return 15;
+    if (!bossIsActive && spaceSeen) return 55;
+    if (!bossIsActive && ortSeen) return 31;
+    if (!bossIsActive && ufoSeen) return 49;
+    if (!bossIsActive && zeppellinSeen) return 40;
     if (bossIsActive) return 150; // Slower spawn rate if a boss is active
     if (playerScore < 1000) return 60; // Fast spawn rate for low scores
     if (playerScore < 5000) return 80; // Slower spawn as difficulty increases
@@ -342,6 +414,7 @@ void EnemyManager::cleanUp() {
     ufoSeen = false;
     ortSeen = false;
     spaceSeen = false;
+    zeppellinSeen = false;
     bossHasDied();
 }
 

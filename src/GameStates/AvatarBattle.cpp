@@ -1,18 +1,18 @@
-#include "ShipBattle.h"
+#include "AvatarBattle.h"
 #include "PlayerShip.h"
 
 // ====================================
 // Constructor & Destructor Section
 // ====================================
 
-ShipBattle::ShipBattle() {
-    this->player = new Player(ofGetWidth() / 2, ofGetHeight() / 2);
+AvatarBattle::AvatarBattle() {
+    this->player = new Player(ofGetWidth() / 2, ofGetHeight() / 2, "Aang");
     this->playerScore = 0;
     this->killspreeTimer = 0;
     
     font.load("Fonts/Orbitron.ttf", 20, true);
     indicatorFont.load("Fonts/Orbitron.ttf", 10, true);
-    backgroundImage.load("Menu_Images/BattleArea.jpg");
+    backgroundImage.load("Menu_Images/sky.jpg");
     shiplivesSprite.load("ShipModels/shipModel2.png");
 
 }
@@ -23,11 +23,11 @@ ShipBattle::ShipBattle() {
 
 
 // Update Method
-void ShipBattle::update() {
+void AvatarBattle::update() {
     // Boss spawn logic
     if (EnemyManager::isBossSpawning()) {
         displayBossWarning = true;
-        SoundManager::stopSong("battle");
+        SoundManager::stopSong("avatar");
     } 
     else {
         displayBossWarning = false;
@@ -78,7 +78,7 @@ void ShipBattle::update() {
         }
         if(lifeCounter == 3){
             this->setNextState("GameOverState");
-            SoundManager::stopSong("battle");
+            SoundManager::stopSong("avatar");
             if(EnemyManager::getSpawningBossType() != ""){
                 SoundManager::stopSong(EnemyManager::getSpawningBossType());
             }
@@ -94,7 +94,7 @@ void ShipBattle::update() {
 }
 
 //====== Draw Method ====== 
-void ShipBattle::draw() {
+void AvatarBattle::draw() {
     ofSetBackgroundColor(ofColor::black);
     backgroundImage.draw(0, 0, ofGetWidth(), ofGetHeight());
     
@@ -142,7 +142,7 @@ void ShipBattle::draw() {
 // Input Handling Section
 // ====================================
 
-void ShipBattle::keyPressed(int key) {
+void AvatarBattle::keyPressed(int key) {
     player->addPressedKey(key);
     
     //DEBUG KEYS - Press these keys to ease the debugging with the game
@@ -156,12 +156,12 @@ void ShipBattle::keyPressed(int key) {
     if(key == 'x') player->shield = 0;
 }
 
-void ShipBattle::keyReleased(int key) {
+void AvatarBattle::keyReleased(int key) {
     key = tolower(key);
     this->player->removePressedKey(key);
 }
 
-void ShipBattle::mousePressed(int x, int y, int button) {
+void AvatarBattle::mousePressed(int x, int y, int button) {
     // Implementation for mousePressed event in case you want to do something with this
 }
 
@@ -169,7 +169,7 @@ void ShipBattle::mousePressed(int x, int y, int button) {
 // Helper Methods Section
 // ====================================
 
-void ShipBattle::wrapCoords(ofPoint &currentPos) {
+void AvatarBattle::wrapCoords(ofPoint &currentPos) {
     // Screen wrapping logic for player ship
     if (currentPos.x < 0.0) currentPos.x = ofGetWidth() - 10;
     if (currentPos.x >= ofGetWidth()) currentPos.x = 10;
@@ -177,14 +177,14 @@ void ShipBattle::wrapCoords(ofPoint &currentPos) {
     if (currentPos.y >= ofGetHeight()) currentPos.y = 10;
 }
 
-void ShipBattle::draw_bullets() {
+void AvatarBattle::draw_bullets() {
     // Draw all player bullets
     for (auto &bullet : this->player->bullets) {
         bullet.draw();
     }
 }
 
-void ShipBattle::updateBullets() {
+void AvatarBattle::updateBullets() {
     // Update logic for player bullets
     for (auto &bullet : this->player->bullets) {
         bullet.update();
@@ -194,7 +194,7 @@ void ShipBattle::updateBullets() {
 // ====================================
 // UI and Feedback Methods Section
 // ====================================
-void ShipBattle::healthBar(int currHealth, int maxHealth) {
+void AvatarBattle::healthBar(int currHealth, int maxHealth) {
     indicatorFont.drawString("HEALTH", 10, 30);
     ofNoFill();
     ofDrawRectangle(10, 40, maxHealth *2, 20);
@@ -204,7 +204,7 @@ void ShipBattle::healthBar(int currHealth, int maxHealth) {
     ofSetColor(ofColor::white);
 }
 
-void ShipBattle::forceShield(int currShield, int maxShield) {
+void AvatarBattle::forceShield(int currShield, int maxShield) {
     indicatorFont.drawString("Force Shield", 10, 120);
     ofNoFill();
     ofDrawRectangle(10, 130, maxShield *2, 20);
@@ -214,7 +214,7 @@ void ShipBattle::forceShield(int currShield, int maxShield) {
     ofSetColor(ofColor::white);
 }
 
-void ShipBattle::killSpreeTimer(int currTimer, int maxTimer) {
+void AvatarBattle::killSpreeTimer(int currTimer, int maxTimer) {
     indicatorFont.drawString("KILL SPREE", 10, 80);
     ofNoFill();
     ofDrawRectangle(10, 90, maxTimer, 10);
@@ -228,12 +228,12 @@ void ShipBattle::killSpreeTimer(int currTimer, int maxTimer) {
 // Game Mechanics Methods Section
 // ====================================
 
-double ShipBattle::killSpreeMode() {
+double AvatarBattle::killSpreeMode() {
     // Logic for kill spree mode bonus
     return this->killspreeTimer > 0 ? 1.5 : 1.0;
 }
 
-double ShipBattle::scoreMultiplier() {
+double AvatarBattle::scoreMultiplier() {
     // Logic for score multiplier based on current score
     if (playerScore >= 350) return 3.5;
     else if (playerScore >= 200) return 2.5;
@@ -241,7 +241,7 @@ double ShipBattle::scoreMultiplier() {
     else return 1.0; // Default multiplier
 }
 
-void ShipBattle::reset(){
+void AvatarBattle::reset(){
     setFinished(false);
     setNextState("");
 }

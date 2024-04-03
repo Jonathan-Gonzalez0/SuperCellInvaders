@@ -5,7 +5,7 @@ IntroState::IntroState(){
     font.load("Fonts/Orbitron.ttf", 50);
 
     Button* PlayButton = new Button(ofGetWidth()/2 - 100, ofGetHeight()/2, 200, 50, "", "Play");
-    Button* PlayButton2 = new Button(ofGetWidth()/2 - 100, ofGetHeight()/2 + 100, 200, 50, "", "Hey There!");
+    Button* PlayButton2 = new Button(ofGetWidth()/2 - 100, ofGetHeight()/2 + 100, 200, 50, "", "Avatar");
 
     buttons.push_back(PlayButton);
     buttons.push_back(PlayButton2);
@@ -15,6 +15,12 @@ void IntroState::update() {
     if(buttons[0]->wasPressed()){           // This is the "Play" button
         SoundManager::stopSong("intro");
         this->setNextState("BattleState");
+        this->setFinished(true);
+    }
+
+    if(buttons[1]->wasPressed()){           // This is the "Play" button
+        SoundManager::stopSong("intro");
+        this->setNextState("Avatar");
         this->setFinished(true);
     }
 

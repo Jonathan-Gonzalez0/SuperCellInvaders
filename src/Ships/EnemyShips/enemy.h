@@ -45,6 +45,19 @@ class EnemyShip {
             this->dead = false;
         }
 
+        EnemyShip(int xpos, int ypos, ofImage* bullet, float _speed, int health, int score) {
+            pos.x = xpos;
+            pos.y = ypos;
+            speed = _speed;
+            this->health = health;
+            this->score = score;
+            damping = 0.95;
+            shipOrientation = 0;
+            rotationSpeed = 1.0;
+            shotTimer = 1; //Starts at 1 instead of 0 to avoid the ship shooting as soon as the ship spawns
+            this->dead = false;
+        }
+
         // Pure virtual method to be implemented by the individual enemy classes
         virtual void update(const ofPoint& playerPos) = 0;
         virtual void draw() = 0;
