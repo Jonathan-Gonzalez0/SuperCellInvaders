@@ -13,7 +13,7 @@ AvatarBattle::AvatarBattle() {
     font.load("Fonts/Orbitron.ttf", 20, true);
     indicatorFont.load("Fonts/Orbitron.ttf", 10, true);
     backgroundImage.load("Menu_Images/sky.jpg");
-    shiplivesSprite.load("ShipModels/shipModel2.png");
+    shiplivesSprite.load("ShipModels/Appa.png");
 
 }
 
