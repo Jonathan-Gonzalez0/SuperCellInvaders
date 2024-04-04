@@ -34,7 +34,11 @@ Player::Player(int Xposition, int Yposition, string Character){
     this->bomb.load("CompressedImages/Bomb-min.png");
     windBullet.load("Bullets/airBullet.png");
     fireBullet.load("Bullets/fireBall.png");
-
+    waterBullet.load("Bullets/waterBullet.png");
+    earthBullet.load("Bullets/earthBullet.png");
+    elements.load("CompressedImages/elements.png");
+    bulletPic = &windBullet;
+    bullet = "Wind";
     this->shipOrientation = 0;
     accelerationAmount = 5.0; // Adjust the value as needed
     score = 0;
@@ -55,8 +59,12 @@ int Player::getScore() { return score; }
 void Player::setScore(int score) { this->score = score; }
 
 void Player::draw() {
-        if(bombs == 1){
-            this->bomb.draw(ofGetWidth() - 150, 30, 50, 50); //Makes sure to draw the bomb when it is necessary
+        if(skin == "Aang"){
+       
+        }else{
+            if(bombs == 1){
+                this->bomb.draw(ofGetWidth() - 150, 30, 50, 50); //Makes sure to draw the bomb when it is necessary
+            }
         }
 
         // Draw the ship sprite with the calculated rotation
@@ -112,12 +120,12 @@ void Player::shoot() {
     // Check if enough time has passed since the last shot
         if (currentTime - lastShotTime >= shotCooldown) {
 
-                if(skin == "Aang"){
+                if(skin == "Aang" && bullet == "Wind"){
                     double a = 30/pow(50,2);
                 for(int i = -50; i <= 50; i += 10){
                     double left = i*cos(ofDegToRad(shipOrientation+90))+(30-a*pow(i,2))*sin(ofDegToRad(shipOrientation+90));
                     double right = i*sin(ofDegToRad(shipOrientation+90))+(-30+a*pow(i,2))*cos(ofDegToRad(shipOrientation+90));
-                    Projectiles p = Projectiles(ofPoint(this->pos.x + 75*sin(ofDegToRad(shipOrientation))+left, this->pos.y - 75*cos(ofDegToRad(shipOrientation))+right), this->shipOrientation, "Aang", i, group, &windBullet);
+                    Projectiles p = Projectiles(ofPoint(this->pos.x + 75*sin(ofDegToRad(shipOrientation))+left, this->pos.y - 75*cos(ofDegToRad(shipOrientation))+right), this->shipOrientation, "Aang", i, group, bulletPic);
                     p.setColors(ofColor::azure, ofColor::blueViolet);
                     this->bullets.push_back(p);
                 }
@@ -125,6 +133,15 @@ void Player::shoot() {
                 if(group == 3){
                     group = 0;
                 }
+            }else if(skin == "Aang" && (bullet == "Fire")){
+                Projectiles p = Projectiles(ofPoint(this->pos.x + 75*sin(ofDegToRad(shipOrientation)), this->pos.y - 75*cos(ofDegToRad(shipOrientation))), this->shipOrientation, "AangFire", 0, 0, bulletPic);
+                this->bullets.push_back(p); 
+            }else if(skin == "Aang" && bullet == "Earth"){
+                Projectiles p = Projectiles(ofPoint(this->pos.x + 75*sin(ofDegToRad(shipOrientation)), this->pos.y - 75*cos(ofDegToRad(shipOrientation))), this->shipOrientation, "AangEarth", 0, 0, bulletPic);
+                this->bullets.push_back(p); 
+            }else if(skin == "Aang" && bullet == "Water"){
+                Projectiles p = Projectiles(ofPoint(this->pos.x + 75*sin(ofDegToRad(shipOrientation)), this->pos.y - 75*cos(ofDegToRad(shipOrientation))), this->shipOrientation, "AangWater", 0, 0, bulletPic);
+                this->bullets.push_back(p); 
             }else{
                 if(newbossdied){
                 Projectiles p = Projectiles(ofPoint(this->pos.x, this->pos.y), this->shipOrientation,20);
@@ -140,7 +157,18 @@ void Player::shoot() {
 
             // SoundManager::playSong("bulletSound", false);
             if(skin == "Aang"){
-                SoundManager::playSong("Wind", false);
+                if(bullet == "Wind"){
+                   SoundManager::playSong("Wind", false); 
+                }
+                if(bullet == "Fire"){
+                    SoundManager::playSong("Fire Ball", false); 
+                }
+                if(bullet == "Water"){
+                    SoundManager::playSong("Water", false); 
+                }
+                if(bullet == "Earth"){
+                    SoundManager::playSong("Earth", false); 
+                }
             }
             else{
                 SoundManager::playSong("Beam", false);
@@ -175,6 +203,10 @@ void Player::processPressedKeys() {
     if(keyMap[' ']) shoot();
     if(keyMap['q']) actShield('q'); //Activates shield
     if(keyMap['e']) actBomb('e'); //Activates bomb
+    if(keyMap['f']) actFire('f'); //Activates fire bending
+    if(keyMap['g']) actWind('g'); //Activates wind bending
+    if(keyMap['h']) actWater('h'); //Activates water bending
+    if(keyMap['j']) actEarth('j'); //Activates earth bending
 
             
     if (!isMoving) {
@@ -228,11 +260,60 @@ void Player::actShield(char keyPressed) {
 
 void Player::actBomb(char keyPressed) {
 
-    if (keyPressed == 'e' && bombs >= 1) {
+    if(skin == "Aang"){
+
+    }else{
+        if (keyPressed == 'e' && bombs >= 1) {
+            
+                bombIsActivated = true;
+                bombs--;
+                
+            }
+    }
+
+    }  
+
+void Player::actFire(char keyPressed) {
+
+    if (keyPressed == 'f') {
         
-            bombIsActivated = true;
-            bombs--;
+            bulletPic = &fireBullet;
+            bullet = "Fire";
             
         }
 
-    }  
+    }
+
+void Player::actWind(char keyPressed) {
+
+    if (keyPressed == 'g') {
+        
+            bulletPic = &windBullet;
+            bullet = "Wind";
+            
+        }
+
+    }    
+
+void Player::actWater(char keyPressed) {
+
+    if (keyPressed == 'h') {
+        
+            bulletPic = &waterBullet;
+            bullet = "Water";
+            
+        }
+
+    } 
+
+
+void Player::actEarth(char keyPressed) {
+
+    if (keyPressed == 'j') {
+        
+            bulletPic = &earthBullet;
+            bullet = "Earth";
+            
+        }
+
+    } 

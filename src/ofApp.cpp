@@ -27,6 +27,8 @@ void ofApp::setup(){
     SoundManager::loadSong("Fire Ball", "Sounds/fireBallSound.mp3");
     SoundManager::loadSong("Wind", "Sounds/windSound.mp3");
     SoundManager::loadSong("Zeppellin", "Sounds/Zeppellin.mp3");
+    SoundManager::loadSong("Water", "Sounds/waterSplash.mp3");
+    SoundManager::loadSong("Earth", "Sounds/rockThrow.mp3");
 
 //States
     intro = new IntroState();

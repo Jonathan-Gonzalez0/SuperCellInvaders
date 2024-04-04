@@ -51,6 +51,11 @@ class Player{
         int group = 0;                          // Group of projectiles
         ofImage windBullet;                 // Bullet of Character
         ofImage fireBullet;
+        ofImage waterBullet;
+        ofImage earthBullet;
+        ofImage* bulletPic;
+        string bullet;
+        ofImage elements;
 
         bool newbossdied=false;             //Determine if the boss created in spec 2 have died-Andrés Muñiz
     // === Constructors ===
@@ -100,4 +105,16 @@ class Player{
 
     //Method for activating bomb
         void actBomb(char keyPressed);
+
+        //Activates fire bending
+        void actFire(char keyPressed);
+
+        //Activate wind bending
+        void actWind(char keyPressed);
+
+        //Activate water bending
+        void actWater(char keyPressed);
+
+        //Activate earth bending
+        void actEarth(char keyPressed);
 };

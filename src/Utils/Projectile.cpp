@@ -65,13 +65,34 @@ void Projectiles::draw(){
         ofPopMatrix();
 
     }
+    if(character == "AangFire"){
+        ofPushMatrix();
+        ofTranslate(position);
+        ofRotateDeg(angle+90); // Rotate the projectile based on its angle + 90 degrees to rotate in the appropriate orientation
+        bullet->draw(-22.5, -17.5, 42.5, 42.5); // Draws a fake a skin on top of the bullet
+        ofPopMatrix();
+    }
+    if(character == "AangWater"){
+        ofPushMatrix();
+        ofTranslate(position);
+        ofRotateDeg(angle+90); // Rotate the projectile based on its angle + 90 degrees to rotate in the appropriate orientation
+        bullet->draw(-22.5, -17.5, 42.5, 42.5); // Draws a fake a skin on top of the bullet
+        ofPopMatrix();
+    }
+    if(character == "AangEarth"){
+        ofPushMatrix();
+        ofTranslate(position);
+        ofRotateDeg(angle+90); // Rotate the projectile based on its angle + 90 degrees to rotate in the appropriate orientation
+        bullet->draw(-22.5, -17.5, 85, 85); // Draws a fake a skin on top of the bullet
+        ofPopMatrix();
+    }
     if(character == "fireNation"){
         ofPushMatrix();
         ofTranslate(position);
         ofRotateDeg(angle+90); // Rotate the projectile based on its angle + 90 degrees to rotate in the appropriate orientation
         bullet->draw(-22.5, -17.5, 42.5, 42.5); // Draws a fake a skin on top of the bullet
         ofPopMatrix();
-    }else if(character != "Aang"){
+    }else if(character != "Aang" && character != "AangFire" && character != "AangWater" && character != "AangEarth"){
         ofPushMatrix();
         ofTranslate(position);
         ofRotateDeg(angle + 90); // Rotate the projectile based on its angle + 90 degrees to rotate in the appropriate orientation

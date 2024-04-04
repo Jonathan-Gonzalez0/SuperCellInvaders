@@ -147,7 +147,8 @@ void AvatarBattle::draw() {
     
     //Draw a mini box for the bomb. Make sure to draw the bomb inside this box.
         ofNoFill();
-        ofDrawRectangle(ofGetWidth() - 150, 30, 50, 50);
+        ofDrawRectangle(ofGetWidth() - 200, 30, 150, 150);
+        player->elements.draw(ofGetWidth() - 200, 30, 150, 150);
         ofFill();
     
 }
@@ -219,13 +220,13 @@ void AvatarBattle::healthBar(int currHealth, int maxHealth) {
 }
 
 void AvatarBattle::forceShield(int currShield, int maxShield) {
-    indicatorFont.drawString("Force Shield", 10, 120);
-    ofNoFill();
-    ofDrawRectangle(10, 130, maxShield *2, 20);
-    ofFill();
-    ofSetColor(ofColor::blue);
-    ofDrawRectangle(10, 130, currShield *2, 20);
-    ofSetColor(ofColor::white);
+    // indicatorFont.drawString("Force Shield", 10, 120);
+    // //ofNoFill();
+    // //ofDrawRectangle(10, 130, maxShield *2, 20);
+    // //ofFill();
+    // ofSetColor(ofColor::blue);
+    // ofDrawRectangle(10, 130, currShield *2, 20);
+    // ofSetColor(ofColor::white);
 }
 
 void AvatarBattle::killSpreeTimer(int currTimer, int maxTimer) {
