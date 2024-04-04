@@ -408,7 +408,7 @@ int EnemyManager::whichSpawnInterval(int playerScore) {
     if (!bossIsActive && spaceSeen) return 55;
     if (!bossIsActive && ortSeen) return 31;
     if (!bossIsActive && ufoSeen) return 49;
-    if (!bossIsActive && zeppellinSeen) return 40;
+    if (!bossIsActive && zeppellinSeen) return 20;
     if (bossIsActive) return 150; // Slower spawn rate if a boss is active
     if (playerScore < 1000) return 60; // Fast spawn rate for low scores
     if (playerScore < 5000) return 80; // Slower spawn as difficulty increases
