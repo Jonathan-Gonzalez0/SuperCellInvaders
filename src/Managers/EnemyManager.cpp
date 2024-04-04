@@ -137,11 +137,17 @@ void EnemyManager::manageCollisions(Player* player) {
             }
         }
     }
+    for (auto& enemy : enemyList) {
+        enemy->showHitboxes = toggleHitBoxes;
+        	if(enemy->getHitBox()->isHitPlayerWithEnemy(player->pos)){
+                player->health = min(player->health - 2.0, 100.0);      //Removes 2 points after each collision
+            }
+    }
 
     for (auto& Boss : bossList) {
         Boss->showHitboxes = toggleHitBoxes;
         	if(Boss->getHitBox()->isHitPlayerWithEnemy(player->pos)){
-                player->health = min(player->health - 4.0, 100.0);      //Removes 10 points after each collision
+                player->health = min(player->health - 4.0, 100.0);      //Removes 4 points after each collision
             }
         for (auto& bullet : player->bullets) {
             

@@ -14,6 +14,7 @@ ShipBattle::ShipBattle() {
     indicatorFont.load("Fonts/Orbitron.ttf", 10, true);
     backgroundImage.load("Menu_Images/BattleArea.jpg");
     shiplivesSprite.load("ShipModels/shipModel2.png");
+    shiplivesSprite2.load("CompressedImages/secondShip.png");
 
 }
 
@@ -71,6 +72,7 @@ void ShipBattle::update() {
     
     // State switching logic for when the player dies
     if (this->player->health <= 0) {
+        lostLife = true;
         lifeCounter++;
         drawlifeCounter--;
         if(lifeCounter < 3 ){
@@ -106,13 +108,30 @@ void ShipBattle::draw() {
     ofSetColor(ofColor::white);
     for(unsigned int i=drawlifeCounter; i>0; i--){
         //ofDrawCircle(105 + 28*i , 120, 9);
-       shiplivesSprite.draw(80 +31*i, ofGetWindowHeight()-75, 28, 28);
+        if(player->newbossdied){
+            shiplivesSprite2.draw(80 +31*i, ofGetWindowHeight()-75, 28, 28);
+        }else{
+            shiplivesSprite.draw(80 +31*i, ofGetWindowHeight()-75, 28, 28);
+        }
     }
     font.drawString("Lives: ", 10, ofGetWindowHeight()-50);
 
     // Draw enemies and player
     EnemyManager::drawEnemies();
-    player->draw();
+    if(lostLife){
+        blink++;
+        if(blink % 10 == 0){
+           player->draw(); 
+        }else{
+
+        }
+        if(blink == 60){
+            lostLife = false;
+            blink = 0;
+        }
+    }else{
+        player->draw();
+    }
     draw_bullets();
     
     // Draw boss warning if needed

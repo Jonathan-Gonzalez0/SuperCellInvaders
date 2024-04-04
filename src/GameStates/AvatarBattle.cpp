@@ -71,6 +71,7 @@ void AvatarBattle::update() {
     
     // State switching logic for when the player dies
     if (this->player->health <= 0) {
+        lostLife = true;
         lifeCounter++;
         drawlifeCounter--;
         if(lifeCounter < 3 ){
@@ -112,7 +113,20 @@ void AvatarBattle::draw() {
 
     // Draw enemies and player
     EnemyManager::drawEnemies();
-    player->draw();
+    if(lostLife){
+        blink++;
+        if(blink % 10 == 0){
+           player->draw(); 
+        }else{
+
+        }
+        if(blink == 60){
+            lostLife = false;
+            blink = 0;
+        }
+    }else{
+        player->draw();
+    }
     draw_bullets();
     
     // Draw boss warning if needed

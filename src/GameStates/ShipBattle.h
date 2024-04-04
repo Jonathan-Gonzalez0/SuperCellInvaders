@@ -33,10 +33,13 @@ private:
     ofTrueTypeFont indicatorFont; // Font for text rendering in regards 
     ofImage backgroundImage;       // Background image of the game
       ofImage shiplivesSprite;     //image to show how mani lives -Andrés Muñiz
+      ofImage shiplivesSprite2;    // Image of second ship
 public:   
     // Public members accessible outside the class
     Player* player;                   // Pointer to the player's ship
     bool displayBossWarning;          // Flag to display boss warning
+    bool lostLife = false;             // Marks when a life is lost
+    int blink = 0;                      // Blink timer
 
     // Constructor and Destructor
     ShipBattle();                     // Constructor declaration

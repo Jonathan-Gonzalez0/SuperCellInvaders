@@ -37,6 +37,8 @@ public:
     // Public members accessible outside the class
     Player* player;                   // Pointer to the player's ship
     bool displayBossWarning;          // Flag to display boss warning
+    bool lostLife = false;             // Marks when a life is lost
+    int blink = 0;                      // Blink timer
 
     // Constructor and Destructor
     AvatarBattle();                     // Constructor declaration
